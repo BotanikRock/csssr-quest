@@ -31,7 +31,14 @@ class IssueRequester {
     const urlIssues = `${urlRepo}/issues?page=${pageNumber}&per_page=${issuesPerPage}`;
 
     Promise.all([fetch(urlIssues), fetch(urlRepo)]).then((responses) => {
-      this.handleResponse(responses.map((resp) => resp.json()));
+      const responseStatuses = responses.map(({ok}) => ok);
+      const responseProceed = responses.map((resp) => resp.json());
+
+      if (responseStatuses.includes(false)) {
+        this.handleError(responseProceed);
+      } else {
+        this.handleResponse(responseProceed);
+      }
     });
   }
 
@@ -57,20 +64,22 @@ class IssueRequester {
 
   /**
    *
-   * @param {*} responsePromise
+   * @param {*} responsePromises
    */
-  handleError(responsePromise) {
+  handleError(responsePromises) {
     this.dispatch({
       type: GET_ISSUES_FAIL,
     });
   }
 };
 
+
 const _requestIssues = (requestInfo, dispatch) => {
   const requester = new IssueRequester(requestInfo, dispatch);
 
   requester.send();
 };
+
 
 const getIssues = (repo, pageNumber = 1, issuesPerPage = 10) =>
   (dispatch) => {
@@ -86,9 +95,9 @@ const getPage = (pageNumber) => (dispatch, getState) => {
 };
 
 const changeIssuesPerPage = (issuesPerPage) => (dispatch, getState) => {
-  const {issues: {repoName: repo, pageNumber}} = getState();
+  const {issues: {repoName: repo}} = getState();
 
-  _requestIssues({repo, pageNumber, issuesPerPage}, dispatch);
+  _requestIssues({repo, pageNumber: 1, issuesPerPage}, dispatch);
 };
 
 

@@ -5,7 +5,9 @@ import {connect} from 'react-redux';
 
 const mapStateToProps = (store) => {
   const {issues} = store;
-  const {issuesPerPage, maxIssuesPerPage, minIssuesPerPage, isRequesting} = issues;
+  const {
+    issuesPerPage, maxIssuesPerPage, minIssuesPerPage, isRequesting,
+  } = issues;
 
   return {
     issuesPerPage, maxIssuesPerPage, minIssuesPerPage, isRequesting,

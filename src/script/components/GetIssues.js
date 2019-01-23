@@ -41,6 +41,23 @@ class GetIssues extends React.Component {
   /**
    * @return {*}
    */
+  getStatus() {
+    if (!this.props.isRequesting && !this.props.isError) {
+      return null;
+    }
+
+    if (this.props.isRequesting) {
+      return (<div>Идёт запрос...</div>);
+    }
+
+    if (this.props.isError) {
+      return (<div>Упс! Что-то пошло не так...</div>);
+    }
+  }
+
+  /**
+   * @return {*}
+   */
   render() {
     const inputID = 'repoName';
 
@@ -52,6 +69,7 @@ class GetIssues extends React.Component {
           onChange={this.handleChange}
           value={this.state.inputValue}/>
         <button type="submit">Поиск</button>
+        {this.getStatus()}
       </form>
     );
   }
