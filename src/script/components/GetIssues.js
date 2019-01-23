@@ -16,10 +16,40 @@ class GetIssues extends React.Component {
     };
   }
 
+  /**
+   *
+   * @param {*} prevProps
+   * @param {*} prevState
+   */
+  componentDidUpdate(prevProps) {
+    const {repoName: prevRepo} = prevProps;
+    const {repoName: currentRepo} = this.props;
+
+    if (prevRepo !== currentRepo) {
+      this.setState({
+        inputValue: currentRepo,
+      });
+    }
+  }
+
   handleChange = (event) => {
+    const inputValue = event.target.value;
+
     this.setState({
-      inputValue: event.target.value,
+      inputValue,
     });
+
+    const lastChar = inputValue.slice(-1);
+
+    if (lastChar === '/') {
+      this.props.getRepoListByUser(inputValue.slice(0, -1));
+    }
+  }
+
+  handleProposeChoose = (event) => {
+    const repoName = event.target.value;
+
+    this.props.getIssues(repoName);
   }
 
   handleSearch = (event) => {
@@ -56,19 +86,50 @@ class GetIssues extends React.Component {
   }
 
   /**
+   * @param {*} id
+   * @return {*}
+   */
+  getInput(id) {
+    const hasProposesRepos = this.props.proposedRepos.length > 0;
+
+    const inputParams = {
+      id, value: this.state.inputValue, disabled: this.props.isRequesting,
+    };
+
+    let additionalComponent;
+
+    const datalistId = 'repos';
+
+    if (hasProposesRepos) {
+      inputParams.onChange = this.handleProposeChoose;
+      inputParams.list = datalistId;
+
+      additionalComponent =
+        <datalist id={datalistId}>
+          {this.props.proposedRepos.map((repo, index) =>
+            <option key={index} value={repo}/>)}
+        </datalist>;
+    } else {
+      inputParams.onChange = this.handleChange;
+
+      additionalComponent = <button type="submit">Поиск</button>;
+    }
+
+    return [<input {...inputParams}/>, additionalComponent];
+  }
+
+  /**
    * @return {*}
    */
   render() {
     const inputID = 'repoName';
 
+    const input = this.getInput(inputID);
+
     return (
       <form onSubmit={this.handleSearch}>
         <label htmlFor={inputID}>Имя репозитория</label>
-        <input className="form-control"
-          id={inputID}
-          onChange={this.handleChange}
-          value={this.state.inputValue}/>
-        <button type="submit">Поиск</button>
+        {input}
         {this.getStatus()}
       </form>
     );

@@ -2,11 +2,14 @@ const GET_ISSUES_REQUEST = 'GET_ISSUES_REQUEST';
 const GET_ISSUES_SUCCESS = 'GET_ISSUES_SUCCESS';
 const GET_ISSUES_FAIL = 'GET_ISSUES_FAIL';
 
+const GET_REPOS_REQUEST = 'GET_REPOS_REQUEST';
+const GET_REPOS_SUCCESS = 'GET_REPOS_SUCCESS';
+const GET_REPOS_FAIL = 'GET_REPOS_FAIL';
+
 /**
- * Чтобы не делать сильную вложенность, как эксперимент сделал класс,
- * при создании экземпляра которого в конуструкторе задается диспатч
+ *
  */
-class IssueRequester {
+class Requester {
   /**
    * @param {*} requestInfo
    * @param {*} dispatch
@@ -15,7 +18,13 @@ class IssueRequester {
     this.requestInfo = requestInfo;
     this.dispatch = dispatch;
   }
+}
 
+/**
+ * Чтобы не делать сильную вложенность, как эксперимент сделал класс,
+ * при создании экземпляра которого в конуструкторе задается диспатч
+ */
+class IssueRequester extends Requester {
   /**
    *
    */
@@ -73,9 +82,56 @@ class IssueRequester {
   }
 };
 
+/**
+ * На каждый "запрос" по классу, а почему бы нет?
+ */
+class RepoRequester extends Requester {
+  /**
+   *
+   */
+  send() {
+    this.dispatch({
+      type: GET_REPOS_REQUEST,
+    });
+
+    const {userName} = this.requestInfo;
+
+    const url = `https://api.github.com/users/${userName}/repos`;
+
+    fetch(url).then((body) => body.json()).
+        then((repoData) => {
+          this.handleResponse(repoData);
+        });
+  }
+
+  /**
+   * @param {*} repoData
+   */
+  handleResponse(repoData) {
+    const reposWithIssues = repoData.reduce((acc, repo) => {
+      if (repo.open_issues_count < 1) {
+        return acc;
+      }
+
+      return [...acc, repo.full_name];
+    }, []);
+
+    this.dispatch({
+      type: GET_REPOS_SUCCESS,
+      payload: reposWithIssues,
+    });
+  }
+}
+
 
 const _requestIssues = (requestInfo, dispatch) => {
   const requester = new IssueRequester(requestInfo, dispatch);
+
+  requester.send();
+};
+
+const _requestRepos = (requestInfo, dispatch) => {
+  const requester = new RepoRequester(requestInfo, dispatch);
 
   requester.send();
 };
@@ -100,6 +156,10 @@ const changeIssuesPerPage = (issuesPerPage) => (dispatch, getState) => {
   _requestIssues({repo, pageNumber: 1, issuesPerPage}, dispatch);
 };
 
+const getRepoListByUser = (userName) => (dispatch) => {
+  _requestRepos({userName}, dispatch);
+};
+
 
 export {
   GET_ISSUES_REQUEST,
@@ -108,4 +168,8 @@ export {
   getIssues,
   getPage,
   changeIssuesPerPage,
+  GET_REPOS_REQUEST,
+  GET_REPOS_SUCCESS,
+  GET_REPOS_FAIL,
+  getRepoListByUser,
 };
