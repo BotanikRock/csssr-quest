@@ -14,11 +14,20 @@ class IssuesList extends React.Component {
       return null;
     }
 
-    const issuesList = issues.map(({number, title, created_at: createdAt}) =>
+    const issuesList = issues.map(({
+      number, title, created_at: createdAt,
+      user: {
+        avatar_url: avatarUrl, login, html_url: url,
+      },
+    }) =>
       <tr key={number}>
         <td>{number}</td>
         <td>{title}</td>
         <td>{createdAt}</td>
+        <td><a href={url}>
+          <img src={avatarUrl} height="40" width="40"/><br/>
+          {login}
+        </a></td>
       </tr>
     );
 
@@ -27,9 +36,10 @@ class IssuesList extends React.Component {
         <table>
           <tbody>
             <tr key="legend">
-              <th>1</th>
-              <th>2</th>
-              <th>3</th>
+              <th>Номер</th>
+              <th>Заголовок</th>
+              <th>Дата создания</th>
+              <th>Автор</th>
             </tr>
             {issuesList}
           </tbody>

@@ -16,6 +16,7 @@ class App extends React.Component {
     const {issues: {issuesCount, pageCount, issuesListOnPage}} = this.props;
 
     return (
+      
       <div>
         <GetIssues/>
         {issuesCount > 0 ? <IssuesOnPageControl/> : null}

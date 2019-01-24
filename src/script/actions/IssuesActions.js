@@ -121,7 +121,7 @@ class RepoRequester extends Requester {
       payload: reposWithIssues,
     });
   }
-}
+};
 
 
 const _requestIssues = (requestInfo, dispatch) => {
