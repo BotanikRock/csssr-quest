@@ -37,7 +37,8 @@ class IssueRequester extends Requester {
 
     const [repoOwner, repoName] = repo.split('/');
     const urlRepo = `https://api.github.com/repos/${repoOwner}/${repoName}`;
-    const urlIssues = `${urlRepo}/issues?page=${pageNumber}&per_page=${issuesPerPage}`;
+    const urlIssues =
+     `${urlRepo}/issues?page=${pageNumber}&per_page=${issuesPerPage}`;
 
     Promise.all([fetch(urlIssues), fetch(urlRepo)]).then((responses) => {
       const responseStatuses = responses.map(({ok}) => ok);

@@ -4,9 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --mode production",
-    "start:dev": "webpack-dev-server --mode development --content-base ./src/"
+    "prod:build": "export NODE_ENV=production && gulp prod:build",
+    "dev:server": "export NODE_ENV=development && gulp dev:server"
   },
   "author": "",
   "license": "ISC",
@@ -18,21 +17,20 @@
     "@babel/preset-react": "^7.0.0",
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.4",
-    "css-loader": "^2.1.0",
+    "browser-sync": "^2.26.3",
     "eslint": "^5.12.0",
     "eslint-config-google": "^0.11.0",
-    "html-webpack-plugin": "^3.2.0",
+    "gulp": "^4.0.0",
+    "gulp-concat-css": "^3.1.0",
+    "gulp-sass": "^4.0.2",
     "node-sass": "^4.11.0",
-    "sass-loader": "^7.1.0",
     "webpack": "^4.27.1",
     "webpack-cli": "^3.1.2",
-    "webpack-dev-server": "^3.1.14"
+    "webpack-dev-server": "^3.1.14",
+    "webpack-stream": "^5.2.1"
   },
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
-    "bootstrap": "^4.2.1",
-    "classnames": "^2.2.6",
-    "mini-css-extract-plugin": "^0.5.0",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-redux": "^6.0.0",
