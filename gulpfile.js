@@ -16,11 +16,14 @@ const distRoot = './dist/';
 
 const paths = {
   src: {
-    scriptEntry: `${srcRoot}script/app.js`,
+    scriptEntry: `${srcRoot}script/index.js`,
     script: `${srcRoot}script/`,
     html: `${srcRoot}index.html`,
-    styleDir: `${srcRoot}style/`,
-    style: `${srcRoot}style/**/*.sass`,
+    style: [
+      `${srcRoot}style/vendors/**/*.sass`,
+      `${srcRoot}style/helpers/**/*.sass`,
+      `${srcRoot}style/blocks/**/*.sass`,
+    ],
   },
 };
 
@@ -49,6 +52,12 @@ const reload = (done) => {
   done();
 };
 
+const watch = () => {
+  gulp.watch(paths.src.html, html);
+  gulp.watch(paths.src.style, style);
+  gulp.watch(paths.src.script, script);
+};
+
 const server = () => {
   browserSync.init({
     server: {
@@ -57,17 +66,12 @@ const server = () => {
   });
 
   gulp.watch(distRoot, reload);
-};
-
-const watch = () => {
-  gulp.watch(paths.src.html, html);
-  gulp.watch(paths.src.styleDir, style);
-  gulp.watch(paths.src.script, script);
+  watch();
 };
 
 
 const tasks = [html, style, script];
 
 
-exports['dev:server'] = gulp.series(...tasks, server, watch);
+exports['dev:server'] = gulp.series(...tasks, server);
 exports['prod:build'] = gulp.series(...tasks);

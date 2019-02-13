@@ -6,7 +6,7 @@ module.exports = {
       'Access-Control-Allow-Origin': '*',
     },
   },
-  entry: './src/script/app.js',
+  entry: './src/script/index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'main.js',

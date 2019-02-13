@@ -1,0 +1,53 @@
+@import '../_var'
+  
+$inputHeight: 30px;
+
+.main-form
+  display: flex
+  align-items: center
+  flex-direction: column
+
+  padding: 10px 0 25px
+
+  background: $bgColor
+  border-bottom: 3px solid $mainColor
+
+  &__label
+    margin-bottom: 10px
+
+    font-size: 20px
+    font-weight: $fwBold
+
+  &__inner
+    display: flex
+    flex-direction: column
+    align-items: stretch
+    width: 100%
+    max-width: 400px
+
+  &__input
+    padding: 5px 10px
+    height: $inputHeight
+    border: 1px solid $borderColor
+    border-radius: 7px 7px 0 0
+    outline: none
+    transition: border-color, $transitionTime
+    
+    &:focus
+      border-color: $mainColor
+
+  &__submit
+    height: $inputHeight
+    border: 1px solid $borderColor
+    border-radius: 0 0 7px 7px
+    border-top: none
+    font-weight: $fwBold
+    background: $whiteColor
+    text-transform: uppercase
+    cursor: pointer
+    transition: color $transitionTime, background $transitionTime, border-color $transitionTime
+
+    &:hover
+      color: $whiteColor
+      background: $mainColor
+      border-color: $mainColor

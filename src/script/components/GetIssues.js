@@ -76,13 +76,19 @@ class GetIssues extends React.Component {
       return null;
     }
 
+    const params = {class: 'main-form__alert'};
+
     if (this.props.isRequesting) {
-      return (<div>Идёт запрос...</div>);
+      params.text = 'Идёт запрос...';
+      params.class =+ ' main-form__alert--process';
     }
 
     if (this.props.isError) {
-      return (<div>Упс! Что-то пошло не так...</div>);
+      params.text = 'Что-то пошло не так.';
+      params.class =+ ' main-form__alert--error';
     }
+
+    return (<div className={params.class}>{params.text}</div>);
   }
 
   /**
@@ -112,10 +118,16 @@ class GetIssues extends React.Component {
     } else {
       inputParams.onChange = this.handleChange;
 
-      additionalComponent = <button type="submit">Поиск</button>;
+      additionalComponent =
+        <button className="main-form__submit" type="submit">Поиск</button>;
     }
 
-    return [<input {...inputParams}/>, additionalComponent];
+    return (
+      <div className="main-form__inner">
+        <input className="main-form__input" {...inputParams}/>
+        {additionalComponent}
+      </div>
+    );
   }
 
   /**
@@ -127,8 +139,10 @@ class GetIssues extends React.Component {
     const input = this.getInput(inputID);
 
     return (
-      <form onSubmit={this.handleSearch}>
-        <label htmlFor={inputID}>Имя репозитория</label>
+      <form className="main-form" onSubmit={this.handleSearch}>
+        <label className="main-form__label" htmlFor={inputID}>
+          Введите имя репозитория
+        </label>
         {input}
         {this.getStatus()}
       </form>
