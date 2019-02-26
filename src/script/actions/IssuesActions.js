@@ -18,6 +18,19 @@ class Requester {
     this.requestInfo = requestInfo;
     this.dispatch = dispatch;
   }
+
+  /**
+   *
+   * @param {*} responsePromises
+   */
+  handleError(responsePromises) {
+    Promise.all(responsePromises).then((errors) => {
+      this.dispatch({
+        type: this.actionFailType,
+        payload: {error: errors[0].message},
+      });
+    });
+  }
 }
 
 /**
@@ -25,6 +38,16 @@ class Requester {
  * при создании экземпляра которого в конуструкторе задается диспатч
  */
 class IssueRequester extends Requester {
+  /**
+   * @param {*} requestInfo
+   * @param {*} dispatch
+   */
+  constructor(requestInfo, dispatch) {
+    super(requestInfo, dispatch);
+
+    this.actionFailType = GET_ISSUES_FAIL;
+  }
+
   /**
    *
    */
@@ -71,22 +94,23 @@ class IssueRequester extends Requester {
       this.dispatch({type: GET_ISSUES_SUCCESS, payload});
     });
   }
-
-  /**
-   *
-   * @param {*} responsePromises
-   */
-  handleError(responsePromises) {
-    this.dispatch({
-      type: GET_ISSUES_FAIL,
-    });
-  }
 };
+
 
 /**
  * На каждый "запрос" по классу, а почему бы нет?
  */
 class RepoRequester extends Requester {
+  /**
+   * @param {*} requestInfo
+   * @param {*} dispatch
+   */
+  constructor(requestInfo, dispatch) {
+    super(requestInfo, dispatch);
+
+    this.actionFailType = GET_REPOS_FAIL;
+  }
+
   /**
    *
    */

@@ -15,16 +15,18 @@ class IndexPage extends React.Component {
   render() {
     const {issues: {issuesCount, pageCount, issuesListOnPage}} = this.props;
 
-    return (
-      <div>
-        <GetIssues/>
-        <div className="wrapper">
-          {issuesListOnPage.length > 0 ? <IssuesList/> : null}
-          {issuesCount > 0 ? <IssuesOnPageControl/> : null}
-          {pageCount > 1 ? <Paginator/> : null}
+    const list = issuesListOnPage.length > 0 ?
+      <div key="list" className="wrapper">
+        <div className="list-container">
+          <IssuesList/>
+          <div className="list-container__controls">
+            {pageCount > 1 ? <Paginator/> : null}
+            {issuesCount > 0 ? <IssuesOnPageControl/> : null}
+          </div>
         </div>
-      </div>
-    );
+      </div> : null;
+
+    return [<GetIssues key="form"/>, list];
   }
 }
 

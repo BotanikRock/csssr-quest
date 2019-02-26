@@ -32,8 +32,9 @@ class Paginator extends React.Component {
         });
 
     return (
-      <div>
-        <select value={selectedPage}
+      <div className="paginator">
+        <label className="paginator__label">Страница</label>
+        <select className="paginator__control" value={selectedPage}
           onChange={this.onChangePage}
           disabled={this.props.isRequesting}>{pageOptions}</select>
       </div>

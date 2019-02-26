@@ -1,3 +1,4 @@
+/* eslint-disable no-invalid-this */
 import React from 'react';
 
 /**
@@ -72,11 +73,15 @@ class IssuesOnPageControl extends React.Component {
    */
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <label>Кол-во элементов на странице</label>
-        <input type="number" onChange={this.handleChange} onBlur={this.handleBlur}
-          value={this.state.inputValue}/>
-        <button type="submit">Поменять</button>
+      <form className="counter-form" onSubmit={this.handleSubmit}>
+        <label className="counter-form__label">Элементов:</label>
+        <div className="counter-form__wrapper">
+          <input className="counter-form__input" type="number"
+            onChange={this.handleChange}
+            onBlur={this.handleBlur}
+            value={this.state.inputValue}/>
+          <button className="counter-form__submit" type="submit">Поменять</button>
+        </div>
       </form>
     );
   }

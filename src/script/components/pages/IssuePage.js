@@ -13,9 +13,11 @@ class IssuePage extends React.Component {
     const {body, title} = this.props.location.state.issue;
 
     return (
-      <div><Link to='/'>На главную</Link>
-        <h1>{title}</h1>
-        <p>{body}</p></div>
+      <div className="wrapper article">
+        <Link to='/' className='top-button'>На главную</Link>
+        <h1 className="article__title">{title}</h1>
+        <p className="article__body">{body}</p>
+      </div>
     );
   }
 }

@@ -1,0 +1,23 @@
+@import "../_var"
+
+.top-button
+    position: fixed
+    display: flex
+    justify-content: center
+    align-items: center
+    top: 0
+    left: 0
+    width: 100vw
+    height: $topButtonHeight
+    background: $mainColor
+    border-bottom: 2px solid $mainColor
+    color: $whiteColor
+    font-size: 20px
+    font-weight: $fwBold
+    transition: .2s background, .2s color
+    text-transform: uppercase
+    text-decoration: none
+
+    &:hover
+        background: $whiteColor
+        color: $mainColor

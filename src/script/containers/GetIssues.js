@@ -3,10 +3,11 @@ import {getIssues, getRepoListByUser} from '../actions/IssuesActions';
 import {connect} from 'react-redux';
 
 const mapStateToProps = (store) => {
-  const {issues: {repoName, proposedRepos, isRequesting, isError}} = store;
+  const {issues:
+    {repoName, proposedRepos, isRequesting, isError, error}} = store;
 
   return {
-    repoName, isRequesting, isError, proposedRepos,
+    repoName, isRequesting, isError, error, proposedRepos,
   };
 };
 

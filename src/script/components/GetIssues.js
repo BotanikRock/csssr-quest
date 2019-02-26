@@ -72,20 +72,22 @@ class GetIssues extends React.Component {
    * @return {*}
    */
   getStatus() {
-    if (!this.props.isRequesting && !this.props.isError) {
+    const {isRequesting, isError, error} = this.props;
+
+    if (!isRequesting && !isError) {
       return null;
     }
 
     const params = {class: 'main-form__alert'};
 
-    if (this.props.isRequesting) {
+    if (isRequesting) {
       params.text = 'Идёт запрос...';
-      params.class =+ ' main-form__alert--process';
+      params.class += ' main-form__alert--process';
     }
 
-    if (this.props.isError) {
-      params.text = 'Что-то пошло не так.';
-      params.class =+ ' main-form__alert--error';
+    if (isError) {
+      params.text = error;
+      params.class += ' main-form__alert--error';
     }
 
     return (<div className={params.class}>{params.text}</div>);

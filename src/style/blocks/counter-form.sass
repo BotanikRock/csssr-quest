@@ -1,0 +1,43 @@
+@import '../_var'
+
+$controlHeight: 30px
+
+@mixin control($height)
+    height: $height
+    box-sizing: border-box
+
+
+.counter-form
+    &__wrapper
+        display: flex
+
+    &__input
+        @include control($controlHeight)
+        width: 33px
+        border: 1px solid $borderColor
+        padding-left: 4px
+        border-right: none
+        border-radius: 5px 0 0 5px
+        outline: none
+
+        -moz-appearance: none
+
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button
+            -webkit-appearance: none
+            margin: 0
+
+    &__submit
+        @include control($controlHeight)
+        border-radius: 0 5px 5px 0
+        border: 1px solid $borderColor
+        border-left: none
+        background: $mainColor
+        color: $whiteColor
+        transition: .2s color, .2s background
+        cursor: pointer
+        text-transform: uppercase
+
+        &:hover
+            color: $mainColor
+            background: $whiteColor

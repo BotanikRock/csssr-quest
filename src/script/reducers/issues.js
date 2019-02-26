@@ -22,6 +22,7 @@ const initialState = {
 
   isRequesting: false,
   isError: false,
+  error: '',
 };
 
 const reducer = (state = initialState, action) => {
@@ -36,15 +37,20 @@ const reducer = (state = initialState, action) => {
       return {...state, ...payload, pageCount, proposedRepos: [],
         isRequesting: false, isError: false};
     case GET_ISSUES_FAIL:
+      const {payload: {error: errorIssues}} = action;
+
       return {...state,
-        isRequesting: false, isError: true};
+        isRequesting: false, isError: true, error: errorIssues};
     case GET_REPOS_REQUEST:
       return {...state, isRequesting: true, isError: false};
     case GET_REPOS_SUCCESS:
       return {...state, proposedRepos: action.payload,
         isRequesting: false, isError: false};
     case GET_REPOS_FAIL:
-      return {...state, isRequesting: false, isError: true};
+      const {payload: {error: errorRepos}} = action;
+
+      return {...state,
+        isRequesting: false, isError: true, error: errorRepos};
     default:
       return state;
   }

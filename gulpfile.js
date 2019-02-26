@@ -3,6 +3,9 @@ const browserSync = require('browser-sync').create();
 const webpack = require('webpack-stream');
 const sass = require('gulp-sass');
 const concatCss = require('gulp-concat-css');
+const postCss = require('gulp-postcss');
+const autoprefixer = require('autoprefixer');
+const cssnano = require('cssnano');
 
 sass.compiler = require('node-sass');
 
@@ -23,6 +26,7 @@ const paths = {
       `${srcRoot}style/vendors/**/*.sass`,
       `${srcRoot}style/helpers/**/*.sass`,
       `${srcRoot}style/blocks/**/*.sass`,
+      `${srcRoot}style/pages/**/*.sass`,
     ],
   },
 };
@@ -33,10 +37,20 @@ const html = () => {
       .pipe(gulp.dest(distRoot));
 };
 
+const postCssPluginDev = [
+  autoprefixer({browsers: ['cover 99.5%']}),
+];
+
+const postCssPluginProd = [
+  ...postCssPluginDev,
+  cssnano(),
+];
+
 const style = () => {
   return gulp.src(paths.src.style)
       .pipe(sass().on('error', sass.logError))
       .pipe(concatCss('style.css'))
+      .pipe(postCss(mode === 'development' ? postCssPluginDev : postCssPluginProd))
       .pipe(gulp.dest(distRoot));
 };
 
